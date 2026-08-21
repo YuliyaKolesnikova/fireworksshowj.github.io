@@ -6,7 +6,7 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-An interactive canvas-based fireworks simulation with stunning particle effects, multiple explosion patterns, and fully customizable settings. Click anywhere to launch beautiful fireworks into the night sky!
+An interactive canvas-based fireworks simulation with stunning particle effects, 10 explosion patterns, immersive sound design, and fully customizable settings. Optimized for smooth performance on 120Hz displays. Click anywhere to launch beautiful fireworks into the night sky!
 
 <p align="center">
   <a href="https://fireworksshowj.github.io">
@@ -20,10 +20,12 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 
 ### 🎨 Visual Effects
 - **Realistic Physics** - Particles with gravity, friction, and velocity simulation
-- **Glowing Particles** - Beautiful glow effects with shadow blur
-- **Particle Trails** - Dynamic trails following each particle
+- **Frame-Rate Independent Motion** - Delta-time physics ensures identical speed on 60Hz, 120Hz, or any refresh rate
+- **Glowing Particles** - Beautiful additive-blend glow effects with shadow blur
+- **Silky Particle Trails** - Dynamic multi-point trails following each particle
+- **Radial Screen Flash** - Soft, atmospheric bloom centered on each explosion
 - **City Skyline** - Atmospheric silhouette with illuminated windows
-- **Starry Background** - Twinkling stars for immersive night sky
+- **Starry Background** - 160 organically twinkling stars with randomized pulse timing
 
 ### 💥 Explosion Patterns
 | Pattern | Description |
@@ -33,7 +35,11 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 | ⭐ **Star** | Five-pointed star pattern |
 | 💍 **Ring** | Double concentric rings |
 | 🎯 **Double** | Two-color layered explosion |
-| 🎲 **Random** | Randomly selected pattern |
+| 🌿 **Willow** | Drooping, long-hanging cascade |
+| 🌸 **Chrysanthemum** | Multi-layered spherical bloom |
+| 🌴 **Palm** | Rising fronds like a palm tree |
+| 🌀 **Spiral** | Rotating spiral trajectory |
+| 🎲 **Random** | Randomly selected pattern each launch |
 
 ### 🎨 Color Schemes
 - 🌈 Rainbow (default)
@@ -42,12 +48,27 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 - 🟢 Green
 - 🟡 Gold
 - 🟣 Purple
+- 🩷 Pastel
+- 🔥 Fire
+- ❄️ Ice
 - ⚪ White
 
+### 🔊 Audio & Effects
+- **Launch Whistle** - Procedurally generated rising tone (Web Audio API)
+- **Explosion Boom** - Filtered noise burst for each detonation
+- **Screen Flash** - Toggleable radial light bloom
+- **Glitter Trails** - Optional sparkling secondary particles
+
 ### 💾 Persistent State
-- Launch counter saved across sessions
 - All settings preserved in localStorage
-- Session time tracking
+- Debounced saving for smooth slider interaction
+- Settings restored automatically on return
+
+### ⚡ Performance
+- **120Hz optimized** with clamped delta-time stepping
+- **Opaque canvas context** for faster compositing
+- **Swap-remove** particle management (zero-allocation cleanup)
+- **Auto-pause** rendering when the browser tab is hidden
 
 ---
 
@@ -64,7 +85,8 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 | 🚀 **Launch** | Fire a single random firework |
 | 🔄 **Auto Mode** | Toggle continuous firework show |
 | 💥 **Multi Shot** | Launch 3-6 fireworks burst |
-| ⚙️ **Settings** | Open/close settings panel |
+| 🎇 **Finale** | Trigger an intense grand finale sequence |
+| ⚙️ **Settings** | Open/close the settings popup |
 | 🗑️ **Clear** | Clear all particles from screen |
 
 ### Keyboard Shortcuts
@@ -73,6 +95,8 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 | `Space` | Launch single firework |
 | `M` | Multi-shot burst |
 | `A` | Toggle auto mode |
+| `F` | Launch grand finale |
+| `Esc` | Close settings popup |
 
 ---
 
@@ -80,11 +104,14 @@ An interactive canvas-based fireworks simulation with stunning particle effects,
 
 | Setting | Range | Description |
 |---------|-------|-------------|
-| **Particle Count** | 30 - 200 | Number of particles per explosion |
-| **Explosion Size** | 0.5x - 2.0x | Scale of the explosion |
-| **Trail Length** | 0.05 - 0.5 | Length of particle trails |
+| **Particle Count** | 30 - 300 | Number of particles per explosion |
+| **Explosion Size** | 0.5x - 2.5x | Scale of the explosion |
+| **Trail Length** | 0.03 - 0.5 | Persistence of particle trails |
 | **Auto Speed** | 200ms - 3000ms | Interval between auto launches |
 | **Gravity** | 0.01 - 0.15 | Particle fall speed |
+| **Glitter Trails** | On / Off | Sparkling secondary particles |
+| **Screen Flash** | On / Off | Radial light bloom on explosion |
+| **Sound FX** | On / Off | Launch & explosion audio |
 
 ---
 
@@ -113,17 +140,7 @@ Simply go to **[https://fireworksshowj.github.io](https://fireworksshowj.github.
    xdg-open index.html    # Linux
    ```
 
-   Or use a local server:
-   ```bash
-   # Python 3
-   python -m http.server 8000
-   
-   # Node.js (npx)
-   npx serve
-   
-   # PHP
-   php -S localhost:8000
-   ```
+> **Note:** Sound effects require a user interaction (click or key press) to initialize due to browser autoplay policies.
 
 ---
 
@@ -147,7 +164,8 @@ fireworksshowj.github.io/
 | **HTML5 Canvas** | Rendering fireworks and particles |
 | **CSS3** | Styling, animations, glassmorphism effects |
 | **Vanilla JavaScript** | Game logic, physics, state management |
-| **localStorage API** | Persistent settings and statistics |
+| **Web Audio API** | Procedural launch and explosion sound effects |
+| **localStorage API** | Persistent settings |
 | **SVG** | City skyline silhouette |
 
 ---
@@ -192,20 +210,32 @@ Contributions are welcome! Here's how you can help:
 5. **Open a Pull Request**
 
 ### Ideas for Contributions
-- [ ] Add sound effects
-- [ ] New explosion patterns (spiral, text, custom shapes)
-- [ ] More color gradients
-- [ ] Mobile touch gestures
+- [ ] Text/message-shaped explosions
+- [ ] Custom drawable shape patterns
+- [ ] More color gradients & themes
+- [ ] Mobile touch gestures (pinch, swipe)
 - [ ] Firework presets/themes
-- [ ] Screenshot/recording feature
+- [ ] Screenshot/GIF recording feature
 - [ ] Background music integration
 - [ ] Multi-language support
+- [ ] Synchronized "show" scripting
 
 ---
 
 ## 📝 Changelog
 
-### v1.0.0 (2025)
+### v2.0
+- ⚡ **120Hz optimization** with frame-rate-independent delta-time physics
+- 🔊 Added procedural **sound effects** (Web Audio API)
+- 🎇 New **Finale** mode for grand sequences
+- 🌿 Added **Willow, Chrysanthemum, Palm & Spiral** patterns (now 10 total)
+- 🩷 Added **Pastel, Fire & Ice** color schemes (now 10 total)
+- 🪟 Redesigned **settings popup** — centered, topmost modal with backdrop blur
+- 💫 Softer **radial screen flash** and silkier trails
+- 🚀 Performance: opaque canvas, swap-remove cleanup, debounced saves, tab-hidden auto-pause
+- 🧹 Removed statistics panel and moon for a cleaner scene
+
+### v1.0
 - ✨ Initial release
 - 🎆 6 explosion patterns
 - 🎨 7 color schemes
@@ -221,30 +251,6 @@ Contributions are welcome! Here's how you can help:
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-```
-MIT License
-
-Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
 ---
 
 ## 🙏 Acknowledgments
@@ -257,7 +263,7 @@ SOFTWARE.
 
 ## 📧 Contact
 
-- **Repository**: [github.com/fireworksshowj/fireworksshowj.github.io](https://github.com/fireworksshowj/fireworksshow.github.io)
+- **Repository**: [github.com/fireworksshowj/fireworksshowj.github.io](https://github.com/fireworksshowj/fireworksshowj.github.io)
 - **Live Demo**: [fireworksshowj.github.io](https://fireworksshowj.github.io)
 - **Issues**: [Report a bug](https://github.com/fireworksshowj/fireworksshowj.github.io/issues)
 
@@ -274,6 +280,3 @@ SOFTWARE.
 ---
 
 ⭐ **Star this repo if you enjoyed the show!** ⭐
-```
-
-Your GitHub Pages site will automatically be live at **https://fireworksshow.github.io** once you push these files! 🎆
